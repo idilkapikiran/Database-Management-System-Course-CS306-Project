@@ -4,10 +4,10 @@ const db = require('../db/connection.js');
 const router = express.Router();
 
 //Insert 
-router.post('/insert', (req,res) => {
+/*router.post('/insert', (req,res) => {
     let request = req.body;
-    //console.log(request)
-    let tableName = request.table;
+    console.log(request)
+    /*let tableName = request.table;
     let post = request.values; 
     console.log(post)
     //console.log(request.values.length)
@@ -23,11 +23,35 @@ router.post('/insert', (req,res) => {
         });
     }
     res.end();
+});*/
+
+router.post('/insert', (req,res) => {
+    let request = req.body;
+    console.log(request)
+    let tableName = request.table;
+    //let post = request.values; 
+    
+    delete request.table;
+    let newPost = request;
+    /*const index = newPost.indexOf(tableName);
+    if (index > -1) {
+        newPost.splice(index, 1);
+    }*/
+    console.log(newPost);
+    //console.log(request.values.length)
+    
+    let sql = `INSERT INTO ${tableName} SET ?`;
+    let query = db.query(sql, newPost, (err, result) => {
+        if(err) throw err;
+        console.log(result);
+        res.send(result);
+    });
 });
 
 // Delete product given pid
 router.post('/delete', (req, res) => {
     let request = req.body;
+    console.log(request);
     let tableName = request.table;
     let paramFilter = request.paramFilter;
     let paramValue = request.paramValue;
@@ -40,8 +64,9 @@ router.post('/delete', (req, res) => {
 });
 
 // Select all
-router.get('/getall', (req, res) => {
+router.post('/getall', (req, res) => {
     let request = req.body;
+    console.log(request);
     let tableName = request.table;
     let sql = `SELECT * FROM ${tableName}`;
     let query = db.query(sql, (err, results) => {
@@ -51,8 +76,9 @@ router.get('/getall', (req, res) => {
 });
 
 //filter 
-router.get('/getparam', (req, res) => {
+router.post('/getparam', (req, res) => {
     let request = req.body;
+    console.log(request);
     let tableName = request.table;
     let paramFilter = request.paramFilter;
     let paramValue = request.paramValue;
@@ -60,7 +86,17 @@ router.get('/getparam', (req, res) => {
     let query = db.query(sql, (err, result) => {
         if(err) throw err;
         //console.log("product fetched single\n" + result);
+        console.log(result);
+       /* obj = result;
+        let result1 = '<table>';
+        for (let el in obj) {
+          result1 += "<tr><td>" + el + "</td><td>" + obj[el] + "</td></tr>";
+        }
+        result1 += '</table>';*/
+      
         res.send(result);
+        
+        //res.send(result);
     });
 });
 

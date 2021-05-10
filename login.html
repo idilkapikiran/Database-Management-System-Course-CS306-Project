@@ -9,16 +9,24 @@
   </head>
   <body>
     <div class="loginPage">
-      <form class="login-form" action="/getall" method="POST">
+      <form class="login-form" action="http://localhost:5000/admin/delete" method="POST">
+        
         <p>E-Mail Adress</p>
         <input
           type="email"
           class="form-control"
-          id="exampleInputEmail1"
+          id="exampleInputemail1"
           aria-describedby="emailHelp"
           placeholder="Enter email"
         />
-
+        <!--<p>table</p>
+        <input type="text" name="table">
+        <p>filter</p>
+        <input type="text" name="paramFilter">
+        <p>value</p>
+        <input type="text" name="paramValue">
+        -->
+        
         <p>Password</p>
         <input
           type="password"
@@ -27,7 +35,7 @@
           placeholder="Password"
         />
 
-        <button type="submit" class="button">Submit</button>
+        <button type="submit" class="button" >Submit</button>
       </form>
     </div>
     <script
