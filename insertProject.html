@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Select by Filter</title>
+    <title>Insert Project</title>
     <link rel="stylesheet" href="style.css" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <script src="js/bootstrap.min.js"></script>
@@ -82,19 +82,48 @@
         </ul>
       </div>
     </nav>
-    <div class="selectPage">
+    <div class="operationsPage">
       <form
-        class="select-form"
-        action="http://localhost:5000/admin/getparam"
+        class="operations-form-project"
+        action="http://localhost:5000/admin/insert"
         method="POST"
       >
-        <p>Select Table</p>
-        <input type="text" name="table" />
-        <p>Filter</p>
-        <input type="text" name="paramFilter" />
-        <p>Value</p>
-        <input type="text" name="paramValue" />
+        <!--
+        <p>E-Mail Adress</p>
+        <input
+          type="email"
+          class="form-control"
+          id="exampleInputemail1"
+          aria-describedby="emailHelp"
+          placeholder="Enter email"
+        />-->
+        <p>Insert Project</p>
+        <input
+          type="hidden"
+          class="form-control"
+          name="table"
+          value="Project"
+        />
+        <p>Instructor To Lead The Project</p>
+        <input type="text" class="form-control" name="iid" />
+        <p>Project Name</p>
+        <input type="text" class="form-control" name="p_name" />
+        <p>Area Of The Project</p>
+        <input type="text" class="form-control" name="area" />
+        <p>Duration Of The Project</p>
+        <input type="text" class="form-control" name="duration" />
+        <p>Project ID</p>
+        <input type="text" class="form-control" name="pid" />
 
+        <!--
+        <p>Password</p>
+        <input
+          type="password"
+          class="form-control"
+          id="exampleInputPassword1"
+          placeholder="Password"
+        />
+        -->
         <button type="submit" class="button">Submit</button>
       </form>
     </div>

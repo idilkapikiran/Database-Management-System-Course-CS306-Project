@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Select by Filter</title>
+    <title>Insert Student</title>
     <link rel="stylesheet" href="style.css" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <script src="js/bootstrap.min.js"></script>
@@ -82,19 +82,60 @@
         </ul>
       </div>
     </nav>
-    <div class="selectPage">
+    <div class="operationsPage">
       <form
-        class="select-form"
-        action="http://localhost:5000/admin/getparam"
+        class="operations-form-student"
+        action="http://localhost:5000/admin/insert"
         method="POST"
       >
-        <p>Select Table</p>
-        <input type="text" name="table" />
-        <p>Filter</p>
-        <input type="text" name="paramFilter" />
-        <p>Value</p>
-        <input type="text" name="paramValue" />
+        <!--
+        <p>E-Mail Adress</p>
+        <input
+          type="email"
+          class="form-control"
+          id="exampleInputemail1"
+          aria-describedby="emailHelp"
+          placeholder="Enter email"
+        />-->
+        <p>Insert Student</p>
+        <input
+          type="hidden"
+          class="form-control"
+          name="table"
+          value="Student"
+        />
+        <p>ssn</p>
+        <input type="text" class="form-control" name="ssn" />
+        <p>age</p>
+        <input type="text" class="form-control" name="age" />
+        <p>name</p>
+        <input type="text" class="form-control" name="name" />
+        <p>email</p>
+        <input type="text" class="form-control" name="email" />
+        <p>password</p>
+        <input type="text" class="form-control" name="password" />
+        <p>degree</p>
+        <input type="text" class="form-control" name="degree" />
+        <p>gpa</p>
+        <input type="text" class="form-control" name="GPA" />
+        <p>major</p>
+        <input type="text" class="form-control" name="major" />
+        <p>minor</p>
+        <input type="text" class="form-control" name="minor" />
+        <p>student ID</p>
+        <input type="text" class="form-control" name="sid" />
+        <p>faculty name</p>
+        <input type="text" class="form-control" name="f_name" />
 
+        <!--
+        <p>Password</p>
+        <input
+          type="password"
+          class="form-control"
+          id="exampleInputPassword1"
+          placeholder="Password"
+        />
+        -->
         <button type="submit" class="button">Submit</button>
       </form>
     </div>

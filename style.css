@@ -2,6 +2,79 @@
   display: flex;
   margin: 2vw 2vw 2vw 2vw;
   width: 40vw;
+  height: 4vh;
+}
+.select-form {
+  height: 55vh;
+  width: 50vw;
+  background-color: #ff8c61;
+  border: none;
+  color: white;
+  padding: 50px 50px;
+  text-align: center;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 15px;
+  box-shadow: 0 10px 30px 0 rgba(98, 0, 255, 0.4);
+  border-radius: 5px 5px 5px 5px;
+  margin: 5vw 15vw 15vw 25vw;
+  transition: all 0.3s ease-in-out;
+  justify-content: center;
+}
+.select-all-form {
+  height: 30vh;
+  width: 50vw;
+  background-color: #ff8c61;
+  border: none;
+  color: white;
+  padding: 50px 50px;
+  text-align: center;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 15px;
+  box-shadow: 0 10px 30px 0 rgba(98, 0, 255, 0.4);
+  border-radius: 5px 5px 5px 5px;
+  margin: 5vw 15vw 15vw 25vw;
+  transition: all 0.3s ease-in-out;
+  justify-content: center;
+}
+.selectPageAll {
+  background-color: #aecfdf;
+  min-width: 100vh;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+.selectPage {
+  background-color: #aecfdf;
+  min-width: 100vh;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+.delete-form {
+  height: 55xvh;
+  width: 50vw;
+  background-color: #ff8c61;
+  border: none;
+  color: white;
+  padding: 50px 50px;
+  text-align: center;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 15px;
+  box-shadow: 0 10px 30px 0 rgba(98, 0, 255, 0.4);
+  border-radius: 5px 5px 5px 5px;
+  margin: 5vw 15vw 15vw 25vw;
+  transition: all 0.3s ease-in-out;
+  justify-content: center;
+}
+.deletePage {
+  background-color: #aecfdf;
+  min-width: 100vh;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
 }
 .loginPage {
   background-color: #47e5bc;
@@ -9,6 +82,115 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
+}
+.operationsPage {
+  background-color: #aecfdf;
+  min-width: 100vh;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+.operations-form-people {
+  height: 75vh;
+  width: 50vw;
+  background-color: #ff8c61;
+  border: none;
+  color: white;
+  padding: 50px 50px;
+  text-align: center;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 15px;
+  box-shadow: 0 10px 30px 0 rgba(98, 0, 255, 0.4);
+  border-radius: 5px 5px 5px 5px;
+  margin: 5vw 15vw 15vw 25vw;
+  transition: all 0.3s ease-in-out;
+  justify-content: center;
+}
+.operations-form-instructor {
+  height: 110vh;
+  width: 50vw;
+  background-color: #ff8c61;
+  border: none;
+  color: white;
+  padding: 50px 50px;
+  text-align: center;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 15px;
+  box-shadow: 0 10px 30px 0 rgba(98, 0, 255, 0.4);
+  border-radius: 5px 5px 5px 5px;
+  margin: 5vw 15vw 15vw 25vw;
+  transition: all 0.3s ease-in-out;
+  justify-content: center;
+}
+.operations-form-project {
+  height: 75vh;
+  width: 50vw;
+  background-color: #ff8c61;
+  border: none;
+  color: white;
+  padding: 50px 50px;
+  text-align: center;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 15px;
+  box-shadow: 0 10px 30px 0 rgba(98, 0, 255, 0.4);
+  border-radius: 5px 5px 5px 5px;
+  margin: 5vw 15vw 15vw 25vw;
+  transition: all 0.3s ease-in-out;
+  justify-content: center;
+}
+.operations-form-department {
+  height: 55vh;
+  width: 50vw;
+  background-color: #ff8c61;
+  border: none;
+  color: white;
+  padding: 50px 50px;
+  text-align: center;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 15px;
+  box-shadow: 0 10px 30px 0 rgba(98, 0, 255, 0.4);
+  border-radius: 5px 5px 5px 5px;
+  margin: 5vw 15vw 15vw 25vw;
+  transition: all 0.3s ease-in-out;
+  justify-content: center;
+}
+.operations-form-student {
+  height: 140vh;
+  width: 50vw;
+  background-color: #ff8c61;
+  border: none;
+  color: white;
+  padding: 50px 50px;
+  text-align: center;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 15px;
+  box-shadow: 0 10px 30px 0 rgba(98, 0, 255, 0.4);
+  border-radius: 5px 5px 5px 5px;
+  margin: 5vw 15vw 15vw 25vw;
+  transition: all 0.3s ease-in-out;
+  justify-content: center;
+}
+.operations-form-course {
+  height: 75vh;
+  width: 50vw;
+  background-color: #ff8c61;
+  border: none;
+  color: white;
+  padding: 50px 50px;
+  text-align: center;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 15px;
+  box-shadow: 0 10px 30px 0 rgba(98, 0, 255, 0.4);
+  border-radius: 5px 5px 5px 5px;
+  margin: 5vw 15vw 15vw 25vw;
+  transition: all 0.3s ease-in-out;
+  justify-content: center;
 }
 .login-form {
   height: 50vh;
