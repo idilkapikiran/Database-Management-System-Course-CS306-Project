@@ -5,9 +5,40 @@
     <link rel="stylesheet" href="style.css" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <script src="js/bootstrap.min.js"></script>
+    <script src="./server/node_modules/axios/dist/axios.min.js"></script>
+    <script>
+      const deleteTable = (table, paramFilter, paramValue) => {
+        axios
+          .post(
+            "http://localhost:5000/admin/delete",
+            {
+              table: table,
+              paramFilter: paramFilter,
+              paramValue: paramValue,
+            },
+            {
+              withCredentials: true,
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            if (response.data.flag == 2) {
+              //return window.location.href='http://localhost:8080/index.html'
+              alert("Please login first");
+            } else if (response.data.flag == 0) {
+              alert("Success");
+            } else if (response.data.flag != 0) {
+              alert("Error");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
+    </script>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="index.html">Group-M </a>
       <button
         class="navbar-toggler"
@@ -83,38 +114,32 @@
       </div>
     </nav>
     <div class="deletePage">
-      <form
-        class="delete-form"
-        action="http://localhost:5000/admin/delete"
-        method="POST"
-      >
-        <!--
-        <p>E-Mail Adress</p>
-        <input
-          type="email"
-          class="form-control"
-          id="exampleInputemail1"
-          aria-describedby="emailHelp"
-          placeholder="Enter email"
-        />-->
+      <form class="delete-form">
         <p>Delete</p>
         <p>Table</p>
-        <input type="text" class="form-control" name="table" />
+        <input type="text" class="form-control" id="t_name" name="table" />
         <p>Filter</p>
-        <input type="text" class="form-control" name="paramFilter" />
-        <p>Value</p>
-        <input type="text" class="form-control" name="paramValue" />
-
-        <!--
-        <p>Password</p>
         <input
-          type="password"
+          type="text"
           class="form-control"
-          id="exampleInputPassword1"
-          placeholder="Password"
+          id="paramFilter"
+          name="paramFilter"
         />
-        -->
-        <button type="submit" class="button">Submit</button>
+        <p>Value</p>
+        <input
+          type="text"
+          class="form-control"
+          id="paramValue"
+          name="paramValue"
+        />
+
+        <!-- <button type="submit" class="button">Submit</button> -->
+        <input
+          type="button"
+          value="Submit"
+          class="button"
+          onclick="deleteTable(t_name.value, paramFilter.value, paramValue.value)"
+        />
       </form>
     </div>
     <script

@@ -5,9 +5,56 @@
     <link rel="stylesheet" href="style.css" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <script src="js/bootstrap.min.js"></script>
+    <script src="./server/node_modules/axios/dist/axios.min.js"></script>
+    <script>
+      const insert = (
+        ssn,
+        age,
+        name,
+        email,
+        password,
+        title,
+        salary,
+        iid,
+        t_name
+      ) => {
+        axios
+          .post(
+            "http://localhost:5000/admin/insert",
+            {
+              ssn: ssn,
+              age: age,
+              name: name,
+              email: email,
+              password: password,
+              title: title,
+              salary: salary,
+              iid: iid,
+              table: t_name,
+            },
+            {
+              withCredentials: true,
+            }
+          )
+          .then((response) => {
+            console.log(response.data);
+            if (response.data.flag == 2) {
+              //return window.location.href='http://localhost:8080/index.html'
+              alert("Please login first");
+            } else if (response.data.flag == 0) {
+              alert("Success");
+            } else if (response.data.flag != 0) {
+              alert("Error");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
+    </script>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="index.html">Group-M </a>
       <button
         class="navbar-toggler"
@@ -83,54 +130,38 @@
       </div>
     </nav>
     <div class="operationsPage">
-      <form
-        class="operations-form-instructor"
-        action="http://localhost:5000/admin/insert"
-        method="POST"
-      >
-        <!--
-        <p>E-Mail Adress</p>
-        <input
-          type="email"
-          class="form-control"
-          id="exampleInputemail1"
-          aria-describedby="emailHelp"
-          placeholder="Enter email"
-        />-->
+      <form class="operations-form-instructor">
         <p>Insert Instructor</p>
         <input
           type="hidden"
           class="form-control"
           name="table"
           value="Instructor"
+          id="t_name"
         />
         <p>SSN</p>
-        <input type="text" class="form-control" name="ssn" />
+        <input type="text" class="form-control" name="ssn" id="ssn" />
         <p>age</p>
-        <input type="text" class="form-control" name="age" />
+        <input type="text" class="form-control" name="age" id="age" />
         <p>name</p>
-        <input type="text" class="form-control" name="name" />
+        <input type="text" class="form-control" name="name" id="i_name" />
         <p>email</p>
-        <input type="text" class="form-control" name="email" />
+        <input type="text" class="form-control" name="email" id="email" />
         <p>password</p>
-        <input type="text" class="form-control" name="password" />
+        <input type="text" class="form-control" name="password" id="password" />
         <p>title</p>
-        <input type="text" class="form-control" name="title" />
+        <input type="text" class="form-control" name="title" id="title" />
         <p>salary</p>
-        <input type="text" class="form-control" name="salary" />
+        <input type="text" class="form-control" name="salary" id="salary" />
         <p>Instructor ID</p>
-        <input type="text" class="form-control" name="iid" />
+        <input type="text" class="form-control" name="iid" id="iid" />
 
-        <!--
-        <p>Password</p>
         <input
-          type="password"
-          class="form-control"
-          id="exampleInputPassword1"
-          placeholder="Password"
+          type="button"
+          value="Submit"
+          class="button"
+          onclick="insert(ssn.value, age.value, i_name.value, email.value, password.value, title.value, salary.value, iid.value, t_name.value)"
         />
-        -->
-        <button type="submit" class="button">Submit</button>
       </form>
     </div>
     <script

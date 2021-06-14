@@ -3,75 +3,215 @@ const db = require('../db/connection.js');
 
 const router = express.Router();
 
-//Insert 
-/*router.post('/insert', (req,res) => {
-    let request = req.body;
-    console.log(request)
-    /*let tableName = request.table;
-    let post = request.values; 
-    console.log(post)
-    //console.log(request.values.length)
+router.post('/insert', (req,res) => {
     
-    var i;
-    for(i=0; i< request.values.length; i++)
-    {
-        let sql = `INSERT INTO ${tableName} SET ?`;
-        let query = db.query(sql, post[i], (err, result) => {
-            if(err) throw err;
-            console.log(result);
-            //res.send(result);
+    try {
+        console.log(req.session);
+        console.log(req.session.id);
+        //console.log(req.body);
+        if(req.session.isLoggedIn)
+        {
+            let request = req.body;
+            console.log(request)
+            let tableName = request.table;
+            
+            delete request.table;
+            let newPost = request;
+            console.log(newPost);
+            
+            let sql = `INSERT INTO ${tableName} SET ?`;
+            let query = db.query(sql, newPost, (err, result) => {
+                if(err) res.status(400).json({
+                    message: "invalid input",
+                    flag: 1,
+                });
+                else{
+                    console.log(result);
+                    res.status(200).json({
+                        message: "success",
+                        result: result,
+                        flag: 0,
+                    });
+                }
+            });
+        }
+        else {
+            console.log("unauthorized insert attempt");
+            //res.redirect('http://localhost:8080/index.html');
+            res.status(203).json({
+                message: "error",
+                flag: 2,
+            });
+        }
+    } catch (error) {
+        res.status(203).json({
+            message: "error",
+            flag: 2,
         });
     }
-    res.end();
-});*/
-
-router.post('/insert', (req,res) => {
-    let request = req.body;
-    console.log(request)
-    let tableName = request.table;
-    //let post = request.values; 
     
-    delete request.table;
-    let newPost = request;
-    /*const index = newPost.indexOf(tableName);
-    if (index > -1) {
-        newPost.splice(index, 1);
-    }*/
-    console.log(newPost);
-    //console.log(request.values.length)
-    
-    let sql = `INSERT INTO ${tableName} SET ?`;
-    let query = db.query(sql, newPost, (err, result) => {
-        if(err) throw err;
-        console.log(result);
-        res.send(result);
-    });
 });
 
-// Delete product given pid
 router.post('/delete', (req, res) => {
-    let request = req.body;
-    console.log(request);
-    let tableName = request.table;
-    let paramFilter = request.paramFilter;
-    let paramValue = request.paramValue;
-    let sql = `DELETE FROM ${tableName} WHERE ${paramFilter} = ${paramValue}`;
-    let query = db.query(sql, (err, result) => {
-        if(err) throw err;
-        //console.log("product fetched single\n" + result);
-        res.send(result);
-    });
+    try {
+        if(req.session.isLoggedIn)
+        {
+            let request = req.body;
+            console.log(request);
+            let tableName = request.table;
+            let paramFilter = request.paramFilter;
+            let paramValue = request.paramValue;
+            let sql = `DELETE FROM ${tableName} WHERE ${paramFilter} IN (${paramValue})`;
+            let query = db.query(sql, (err, result) => {
+                if(err) res.status(400).json({
+                    message: "invalid input",
+                    flag: 1,
+                });
+                //console.log("product fetched single\n" + result);
+                else{
+                    console.log(result);
+                    res.status(200).json({
+                        message: "success",
+                        result: result,
+                        flag: 0,
+                    });
+                }
+            });
+        }
+        else {
+            console.log("unauthorized delete attempt");
+            //res.redirect('http://localhost:8080/index.html');
+            res.status(203).json({
+                message: "error",
+                flag: 2,
+            });
+        }
+    } catch (error) {
+        res.status(203).json({
+            message: "error",
+            flag: 2,
+        });
+    }
 });
 
 // Select all
 router.post('/getall', (req, res) => {
+    try {
+        let request = req.body;
+        //console.log(req.headers);
+        //console.log(req.session);
+        
+        console.log(request)
+        console.log(req.session.id);
+        let tableName = request.table;
+        let sql = `SELECT * FROM ${tableName}`;
+        let query = db.query(sql, (err, results) => {
+            if(err) {
+                res.status(400).json({
+                message: "error",
+            });
+            }
+            else if(results.length > 0){
+                res.status(200).json({
+                    message: "success",
+                    result: results,
+                    flag: 0,
+                });
+            }
+            else{
+                console.log("2")
+                res.status(400).json({
+                    message: "error",
+                });
+            }
+    });
+    } catch (error) {
+        console.log("3")
+        res.status(400).json({
+            message: "error",
+        });
+    }
+});
+
+router.post('/getByFilter', (req, res) => {
+    try {
+        let request = req.body;
+        console.log(request);
+        var filters = request.filters;
+        var values = request.values;
+        var tableName = request.table;
+        var mySQL ="";
+        console.log(typeof(values[0]));
+        if(typeof(values[0]) == typeof("this is a string"))
+        {
+            mySQL = `SELECT * FROM ${tableName} WHERE ${filters[0]} = '${values[0]}'`;
+        }
+        else{
+            mySQL = `SELECT * FROM ${tableName} WHERE ${filters[0]} >= ${values[0][0]} AND ${filters[0]} <= ${values[0][1]}`;
+        }
+        var myWhere = "";
+        for(var i=1;i<filters.length;i++)
+        {
+            if(!isNaN(values[i][0]))
+            {
+                var tempStr = ` AND ${filters[i]} >= ${values[i][0]} AND ${filters[i]} <= ${values[i][1]}`;
+                myWhere += tempStr;
+            }
+            else{
+                var tempStr = ` AND ${filters[i]} = '${values[i]}'`;
+                myWhere += tempStr;
+            }
+        };
+        mySQL+=myWhere;
+        console.log(mySQL);
+        let query = db.query(mySQL, (err, results) => {
+            if(err) {
+                res.status(400).json({
+                    message: "invalid input",
+                });
+                //console.log("error")
+            }
+            else if(results == null || results.length <= 0) 
+            {
+                res.status(400).json({
+                    message: "invalid input",
+                });
+                //console.log("1")
+            }
+            else {
+                res.status(200).json({
+                    message: "success",
+                    flag:0,
+                    result: results,
+                });
+                //console.log(Object.keys(results[0]))
+            } 
+        
+        });
+    } catch (error) {
+        res.status(400).json({
+            message: "error",
+        });
+    }
+    
+});
+
+router.post('/getStudents', (req, res) => {
     let request = req.body;
     console.log(request);
-    let tableName = request.table;
+    var tableName = 'Student_registered_to';
     let sql = `SELECT * FROM ${tableName}`;
     let query = db.query(sql, (err, results) => {
-        if(err) throw err;
-        res.send(results);
+        if(err) res.status(400).json({message: "error"});
+        if(results.length > 0)
+        {
+            res.status(200).json({
+                message: "success",
+                rows: ["f_name","sid","major","minor","degree","GPA","ssn"],
+                qData: results,
+            });
+        }
+        else res.status(400).json({message: "error"});
     });
 });
 
@@ -100,139 +240,5 @@ router.post('/getparam', (req, res) => {
     });
 });
 
-/*
-router.get('/getparam', (req, res) => {
-    let request = req.body;
-    let params = request.params;
-    var i;
-    var allResults = [];
-    for(i = 0; i < params.length; i++)
-    {
-        let sql = `SELECT * FROM ${params[i].table} WHERE ${params[i].paramFilter} = ${params[i].paramValue}`;
-        let query = db.query(sql, (err, result) => {
-            if(err) throw err;
-            console.log(result[0]);
-
-            console.log(result);
-            Array.prototype.push.apply(allResults, result);
-            
-        });
-    }
-    console.log(allResults);
-    res.send(allResults);
-});
-*/
-
-
-/*
-//Insert product
-router.post('/insertproduct', (req,res) => {
-    let post = req.body;
-    //console.log(post.product)
-    post.product.cost = post.product.current_price * 0.4;
-    let sql = `INSERT IGNORE INTO products SET ?`;
-    let query = db.query(sql, post.product, (err, result) => {
-        if(err) throw err;
-        console.log(result);
-        //res.send('Product '+ req.body.pname +' added...');
-        //delete result.stock;
-        res.send(result);
-    });
-});
-
-
-
-// Select all products
-router.get('/getproducts', (req, res) => {
-    let sql = 'SELECT * FROM products';
-    let query = db.query(sql, (err, results) => {
-        if(err) throw err;
-        //console.log(results);
-        res.send(results);
-    });
-});
-
-// Select single product
-router.get('/getproductid', (req, res) => {
-    let sql = `SELECT * FROM products WHERE product_id = ${req.body.id}`;
-    let query = db.query(sql, (err, result) => {
-        if(err) throw err;
-        //console.log("product fetched single\n" + result);
-        res.send(result);
-    });
-});
-
-// Update product stock given attribute id
-router.put('/updateproduct', (req, res) => 
-{
-    let products = req.body.product;
-    console.log(products)
-    var j
-    var sql = `SELECT A.attribute_id, A.stock, P.product_id FROM attribute A, features F, products P WHERE P.product_id = F.product_id AND F.attribute_id = A.attribute_id AND P.product_id = '${products.product_id}'`
-    db.query(sql, (error, results) => {
-        if(error) throw error;
-        console.log(results);
-        var att_id = results[0].attribute_id;
-        let attID1 = `UPDATE attribute SET stock = ${products.stock} WHERE attribute_id = ${att_id} `;
-        let query1 = db.query(attID1, (err, result1) => 
-        {
-            if(err) throw err;
-            console.log(result1);
-            res.send(result1);
-        });
-    });
-});
-// Delete product given pid
-router.post('/deleteproduct', (req, res) => {
-    let post = req.body;
-    //console.log(post.product)
-    let sql = `DELETE FROM products WHERE product_id = ${post.product.product_id}`;
-    let query = db.query(sql, (err, result) => {
-        if(err) throw err;
-        console.log(result);
-        res.send(result);
-    });
-});
-
-// View Invoices
-router.get('/getinvoices', (req, res) => {
-    let sql = 'SELECT * FROM invoice';
-    let query = db.query(sql, (err, results) => {
-        if(err) throw err;
-        console.log(results);
-        res.send(results);
-    });
-});
-
-// View Invoices history
-router.get('/getinvoicehistory', (req, res) => {
-    let sql = 'SELECT * FROM invoice_history';
-    let query = db.query(sql, (err, results) => {
-        if(err) throw err;
-        console.log(results);
-        res.send(results);
-    });
-});
-
-// View products to be delivered
-router.get('/getdeliverylist', (req, res) => {
-    let sql = 'SELECT * FROM delivery_list';//If only not delivered ones are needed, change sql statement according to situation
-    let query = db.query(sql, (err, results) => {
-        if(err) throw err;
-        //console.log(results);
-        res.send(results);
-    });
-});
-
-// View the addresses for delivery
-router.get('/getdeliveryaddresses', (req, res) => {
-    let sql = `SELECT * FROM delivery_list WHERE delivery_status != ${2} `;//If only not delivered ones are needed, change sql statement according to situation
-    let query = db.query(sql, (err, results) => {
-        if(err) throw err;
-        //console.log(results);
-        res.send(results);
-    });
-});
-*/
 module.exports = router;
 

@@ -5,9 +5,109 @@
     <link rel="stylesheet" href="style.css" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <script src="js/bootstrap.min.js"></script>
+    <script src="./server/node_modules/axios/dist/axios.min.js"></script>
+    <script >
+      const myTable1 = function(data){
+        data = data.result;
+        console.log(data)
+        //console.log(Object.keys(data[0]).length);
+        //console.log(Object.keys(data[0]));
+        //init atttr names
+        var myattrNames ="<tr>";
+        for(var i =0; i<Object.keys(data[0]).length;i++)
+        {
+          if(Object.keys(data[0])[i] != "password")
+            myattrNames= myattrNames + "<td>" + Object.keys(data[0])[i] + "</td>\n";
+        }
+        myattrNames+="</tr>"
+        console.log(myattrNames);
+        
+        var totalTable = "";
+        //init attr values
+        for(var i =0; i <data.length; i++)
+        {
+          totalTable+=`<tr>`;
+          for(var a=0; a <Object.keys(data[0]).length; a++)
+          {
+            if(Object.keys(data[0])[a] != "password")
+            {
+            totalTable+=`<td>${data[i][Object.keys(data[0])[a]]}</td>\n`;
+            }
+          }
+          totalTable+=`</tr>`;
+        }
+        myattrNames += totalTable;
+       
+        $('#my_table').append(myattrNames);
+      };
+      const getall = (myTable) => {
+        //console.log("HERERERERE");
+        //console.log(myTable);
+        axios.post("http://localhost:5000/admin/getall",{
+          table: myTable,
+        },{
+            //AxiosRequestConfig parameter
+            withCredentials: true //correct
+        })
+          .then(response => {
+            //console.log(response.data);
+            myTable1(response.data);  
+          }).catch( error =>{
+            console.log(error);
+          }); 
+      };
+      const myFilters = [];
+      const myValues = [];
+      const addFilter = (addedFilter, strVal, minVal, maxVal) => {
+        // console.log(addedFilter)
+        // console.log(strVal)
+        // console.log(minVal)
+        // console.log(maxVal)
+        if(strVal != "")
+        {
+          myFilters.push(addedFilter);
+          myValues.push(strVal);
+        }
+        else if(minVal != "" && maxVal != "")
+        {
+          myFilters.push(addedFilter);
+          myValues.push([minVal, maxVal]);
+          //myValues.push(maxVal);
+        };
+      }
+      const getByFilter = (table) => {
+        axios.post("http://localhost:5000/admin/getByFilter",{
+          table: table,
+          filters: myFilters,
+          values: myValues,
+        },{
+            withCredentials: true //correct
+        })
+        .then(response => {
+          //console.log(response.data);
+          // let tmp = {
+          //   result: response.data
+          // }
+          if(response.data.flag == 0)
+          {
+            var alertMsg = `Success\nCurrent filters: ${myFilters.join(",")}`
+
+            alert(alertMsg);
+          }
+          else {
+            alert("Error");
+          }
+          myTable1(response.data);
+          
+        }).catch( error =>{
+          console.log(error);
+        });
+      }
+   
+    </script>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="index.html">Group-M </a>
       <button
         class="navbar-toggler"
@@ -85,18 +185,51 @@
     <div class="selectPage">
       <form
         class="select-form"
-        action="http://localhost:5000/admin/getparam"
-        method="POST"
       >
-        <p>Select Table</p>
-        <input type="text" name="table" />
+    
+        <p>Select With Filter</p>
+        <select class="selectpicker" style="margin-bottom: 2vw;"> 
+          <option value="person" onclick="getByFilter('People')">Person</option> 
+          <option value="instructor" onclick="getByFilter('Instructor')" >Instructor </option> 
+          <option value="student" onclick="getByFilter('Student_registered_to')">Student</option> 
+          <option value="course" onclick="getByFilter('Course_Teaches')">Course</option> 
+          <option value="project" onclick="getByFilter('Project_Leads')">Project</option> 
+          <option value="department" onclick="getByFilter('Dep_Head_under')">Department</option> 
+        </select>
         <p>Filter</p>
-        <input type="text" name="paramFilter" />
+        <input type="text" id="filter" style="margin-bottom: 20px" name="paramFilter" />
         <p>Value</p>
-        <input type="text" name="paramValue" />
-
-        <button type="submit" class="button">Submit</button>
+        <input
+          style="margin-bottom: 20px"
+          placeholder="For alphabetical filters"
+          type="text"
+          name="paramValueAlph"
+          id="strValue"
+        />
+        <p>Min - Max</p>
+        <div class="minmax">
+          <input
+            style="padding: 5px"
+            placeholder="For numerical filters"
+            type="text"
+            name="paramValueNumMin"
+            id="minValue"
+          />
+          <input
+            placeholder="For numerical filters"
+            type="text"
+            name="paramValueNumMax"
+            id="maxValue"
+          />
+        </div>
+        <input type="button" class="button" value="Add Filter" onclick="addFilter(filter.value, strValue.value, minValue.value, maxValue.value)">
+     
       </form>
+      <table class="table table-striped" style="width: 100vw" id="my_table"> 
+        <thead class="thead-dark">
+          <tr>
+          </tr>
+      </table>
     </div>
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

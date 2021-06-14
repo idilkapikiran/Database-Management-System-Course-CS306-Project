@@ -7,7 +7,7 @@
     <script src="js/bootstrap.min.js"></script>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="index.html">Group-M </a>
       <button
         class="navbar-toggler"
@@ -28,10 +28,10 @@
               >Home </a
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="login.html">Admin Login</a>
-          </li>
-          <li class="nav-item dropdown">
+          </li>        
+          <li class="nav-item dropdown active">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -52,9 +52,9 @@
               <a class="dropdown-item" href="insertStudent.html"> Student</a>
             </div>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="deletePage.html">Delete</a>
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown active">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -71,12 +71,17 @@
               <a class="dropdown-item" href="selectAllPage.html">Select All With Table</a>
             </div>
           </li>
+          <li class="nav-item">
+            <form action="http://localhost:5000/auth/logout" method="POST">
+              <input type="submit" value="Logout"></input>
+          </form>
+          </li>
         </ul>
       </div>
     </nav>
     <div class="welcome-text">
       <p>
-        Welcome to our guestbook, </p>
+        Welcome to our University Database Management System, </p>
         <p>If you are a guest you can select and view all instances in tables and also view according to a filter in the
         database by selecting from the dropdown navigation bar,
         </p>
